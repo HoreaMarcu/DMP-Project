@@ -58,6 +58,8 @@ void setup() {
   lcd.createChar(1, HOURGLASS_MIDDLE);
   lcd.createChar(2, HOURGLASS_BOTTOM);
   
+
+  pinMode(13, OUTPUT);
   pinMode(20, INPUT);
   pinMode(21, INPUT);
   digitalWrite(20, HIGH);
@@ -79,9 +81,12 @@ void loop() {
   // b3 = digitalRead(6);
   // b4 = digitalRead(7);
   if (enableTimer) {
+    lcd.clear();
     displayValue();
     displayImage();
-    currentTime++;
+    if(currentTime > 0)currentTime--;
+    else currentTime = 100;
+    
     if (currentImage == 2) {
       currentImage = 0;
     } else {
@@ -102,7 +107,7 @@ void loop() {
 void butonUnu(){
   timerInterrupt = false;
   lcd.clear();
-  currentTime = 0;
+  currentTime = 100;
   currentImage = 0;
   enableTimer = !enableTimer;
 }
@@ -151,6 +156,12 @@ void timerFunction(void){
     lcd.print("Timer func: ");
     lcd.print(value);
     value++;
+    if(value % 2 == 1){
+      digitalWrite(13, HIGH);
+    }
+    else{
+      digitalWrite(13, LOW);
+    }
   }
 
 }
